@@ -1,0 +1,131 @@
+
+import { GoogleGenAI } from "@google/genai";
+import { STORE_NAME, PRODUCTS } from '../constants';
+import { supabase } from '../lib/supabase';
+import { Product } from '../types';
+
+// Helper to fetch products for the context
+const fetchProductsForContext = async (): Promise<string> => {
+    try {
+        const { data } = await supabase.from('products').select('*');
+        // Use database items if available, otherwise fallback to local constant data
+        const products = (data && data.length > 0) ? (data as Product[]) : PRODUCTS;
+        
+        return products.map(p => 
+            `- ${p.name} (KES ${p.price.toLocaleString()}): ${p.description} [Stock: ${p.stock > 0 ? p.stock : 'Out of Stock'}]`
+        ).join('\n');
+    } catch (e) {
+        // Fallback to constants on error
+        return PRODUCTS.map(p => 
+            `- ${p.name} (KES ${p.price.toLocaleString()}): ${p.description} [Stock: ${p.stock > 0 ? p.stock : 'Out of Stock'}]`
+        ).join('\n');
+    }
+};
+
+const buildSystemInstruction = (inventoryList: string) => `
+You are the Virtual Assistant for ${STORE_NAME}. 
+We specialize in premium medical attire and equipment for doctors and nurses.
+
+Your goal is to help customers find products, suggest matching items (e.g., matching a stethoscope color to scrubs), and answer questions about sizing or customization.
+Be professional, helpful, and concise.
+
+Here is a list of our specific products available right now:
+${inventoryList}
+
+If a user asks about a product we don't have, politely inform them we don't carry it but suggest a similar alternative from our list if possible.
+`;
+
+export const sendMessageToGemini = async (message: string, history: {role: string, parts: {text: string}[]}[] = []): Promise<string> => {
+  try {
+    // Fetch fresh inventory for every new session or message to ensure accuracy
+    const inventoryList = await fetchProductsForContext();
+    const systemInstruction = buildSystemInstruction(inventoryList);
+
+    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+    const chat = ai.chats.create({
+      model: 'gemini-2.5-flash',
+      config: {
+        systemInstruction: systemInstruction,
+        temperature: 0.7,
+      },
+      history: history
+    });
+
+    const result = await chat.sendMessage({ message });
+    return result.text;
+  } catch (error) {
+    console.error("Gemini API Error:", error);
+    return "I'm having trouble checking our inventory right now. Please try again in a moment.";
+  }
+};
+
+export const generateDesignImages = async (
+  prompt: string, 
+  size: '1K' | '2K' | '4K', 
+  count: number = 1,
+  aspectRatio: "1:1" | "3:4" | "4:3" | "9:16" | "16:9" = "1:1"
+): Promise<string[]> => {
+  try {
+    // We create a helper to run a single generation
+    const generateOne = async (): Promise<string | null> => {
+      try {
+        const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+        const response = await ai.models.generateContent({
+          model: 'gemini-3-pro-image-preview',
+          contents: {
+            parts: [{ text: prompt }],
+          },
+          config: {
+            imageConfig: {
+              imageSize: size,
+              aspectRatio: aspectRatio
+            }
+          }
+        });
+
+        for (const part of response.candidates?.[0]?.content?.parts || []) {
+          if (part.inlineData) {
+            return `data:image/png;base64,${part.inlineData.data}`;
+          }
+        }
+        return null;
+      } catch (e) {
+        console.warn("Single image generation failed", e);
+        return null;
+      }
+    };
+
+    // Run 'count' requests in parallel
+    const promises = Array.from({ length: count }, () => generateOne());
+    const results = await Promise.all(promises);
+    
+    // Filter out any failures
+    return results.filter((img): img is string => img !== null);
+
+  } catch (error) {
+    console.error("Image Generation Error:", error);
+    throw error;
+  }
+};
+
+export const generatePlaceholderImage = async (productName: string): Promise<string | null> => {
+  try {
+    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+    const response = await ai.models.generateContent({
+      model: 'gemini-2.5-flash-image',
+      contents: {
+        parts: [{ text: `Professional product photography of ${productName}, medical attire or equipment store, white background, high quality, photorealistic.` }],
+      },
+    });
+
+    for (const part of response.candidates?.[0]?.content?.parts || []) {
+      if (part.inlineData) {
+        return `data:image/png;base64,${part.inlineData.data}`;
+      }
+    }
+    return null;
+  } catch (error) {
+    console.error("Placeholder Generation Error:", error);
+    return null;
+  }
+};
