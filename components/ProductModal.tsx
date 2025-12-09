@@ -44,7 +44,7 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, isOpen, onClose, o
 
   const isLowStock = product.stock > 0 && product.stock < 5;
   const isOutOfStock = product.stock === 0;
-  const isCustomizable = product.category === 'Scrubs' || product.category === 'Lab Coats' || product.category === 'Uniforms';
+  // const isCustomizable = product.category === 'Scrubs' || product.category === 'Lab Coats' || product.category === 'Uniforms'; // Unused
 
   const handleAddToCart = () => {
     const customization = isCustomizing && embroideryText.trim() 
@@ -131,62 +131,7 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, isOpen, onClose, o
               <p>{product.description}</p>
             </div>
 
-            {/* Customization Section */}
-            {isCustomizable && !isOutOfStock && (
-                <div className="mb-8 bg-slate-50 dark:bg-slate-700/50 p-4 rounded-xl border border-slate-100 dark:border-slate-600">
-                    <button 
-                        onClick={() => setIsCustomizing(!isCustomizing)}
-                        className="flex items-center text-sm font-semibold text-teal-700 dark:text-teal-300 hover:text-teal-900 dark:hover:text-teal-100 w-full mb-1 transition-colors"
-                    >
-                        <Scissors className="w-4 h-4 mr-2" />
-                        {isCustomizing ? 'Remove Customization' : 'Add Embroidery (+KES 1,040)'}
-                    </button>
-                    
-                    {isCustomizing && (
-                        <div className="mt-4 space-y-4 animate-in fade-in slide-in-from-top-1">
-                            <div>
-                                <div className="flex justify-between items-center mb-1">
-                                    <label className="block text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wide">Text to Embroider</label>
-                                    <span className={`text-xs font-medium ${embroideryText.length >= 20 ? 'text-red-500 dark:text-red-400' : 'text-gray-400 dark:text-gray-500'}`}>
-                                        {embroideryText.length}/20
-                                    </span>
-                                </div>
-                                <input 
-                                    type="text" 
-                                    value={embroideryText}
-                                    onChange={(e) => setEmbroideryText(e.target.value)}
-                                    placeholder="e.g. Dr. Amani / Nurse John"
-                                    className="w-full text-sm border border-gray-300 dark:border-slate-600 rounded-lg px-3 py-2 focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-colors bg-white dark:bg-slate-800 text-gray-900 dark:text-white"
-                                    maxLength={20}
-                                />
-                            </div>
-                            <div>
-                                <label className="block text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wide mb-2">
-                                    Thread Color: <span className="text-teal-700 dark:text-teal-400 ml-1">{embroideryColor}</span>
-                                </label>
-                                <div className="flex space-x-3">
-                                    {EMBROIDERY_COLORS.map(c => (
-                                        <button
-                                            key={c}
-                                            onClick={() => setEmbroideryColor(c)}
-                                            className={`w-8 h-8 rounded-full border shadow-sm transition-all duration-200 ${COLOR_MAP[c]} ${
-                                                embroideryColor === c 
-                                                    ? 'ring-2 ring-offset-2 ring-teal-500 dark:ring-offset-slate-800 scale-110' 
-                                                    : 'hover:scale-105 hover:border-gray-400 dark:hover:border-slate-500'
-                                            }`}
-                                            aria-label={`Select ${c} color`}
-                                            title={c}
-                                        >
-                                           {embroideryColor === c && c === 'White' && <Check className="w-4 h-4 text-gray-400 mx-auto" />}
-                                           {embroideryColor === c && c !== 'White' && <Check className="w-4 h-4 text-white mx-auto" />}
-                                        </button>
-                                    ))}
-                                </div>
-                            </div>
-                        </div>
-                    )}
-                </div>
-            )}
+            {/* Customization Section Removed */}
 
             <div className="mt-auto">
               <button
@@ -204,7 +149,7 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, isOpen, onClose, o
                 ) : (
                     <>
                         <Plus className="mr-2 h-5 w-5" />
-                        {isCustomizing ? 'Add Customized Item' : 'Add to Cart'}
+                        Add to Cart
                     </>
                 )}
               </button>

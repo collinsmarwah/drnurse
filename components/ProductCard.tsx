@@ -119,7 +119,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, onBuyNo
 
   const isLowStock = product.stock > 0 && product.stock < 5;
   const isOutOfStock = product.stock === 0;
-  const isCustomizable = product.category === 'Scrubs' || product.category === 'Lab Coats' || product.category === 'Uniforms';
+  // const isCustomizable = product.category === 'Scrubs' || product.category === 'Lab Coats' || product.category === 'Uniforms'; // Unused now
   const isInvalidCustomization = isCustomizing && !embroideryText.trim();
 
   return (
@@ -218,82 +218,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, onBuyNo
       </div>
 
       <div className="mt-auto px-4 pb-4 pt-2">
-        {/* Customization Section */}
-        {isCustomizable && !isOutOfStock && (
-            <div className="mb-4 bg-slate-50 dark:bg-slate-700 p-3 rounded-lg border border-slate-100 dark:border-slate-600 transition-colors">
-                <button 
-                    onClick={() => setIsCustomizing(!isCustomizing)}
-                    className="flex items-center text-xs font-semibold text-teal-700 dark:text-teal-300 hover:text-teal-900 dark:hover:text-teal-100 w-full mb-1 transition-colors focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-1 dark:focus:ring-offset-slate-700 rounded-sm"
-                    aria-expanded={isCustomizing}
-                >
-                    <Scissors className="w-3 h-3 mr-1.5" />
-                    {isCustomizing ? 'Remove Customization' : 'Add Embroidery (+KES 1,040)'}
-                </button>
-                
-                {isCustomizing && (
-                    <div className="mt-2 space-y-3 animate-in fade-in slide-in-from-top-1">
-                        <div>
-                            <div className="flex justify-between items-center mb-1">
-                                <label htmlFor={`embroidery-${product.id}`} className="block text-[10px] font-medium text-gray-500 dark:text-gray-400 uppercase">Text</label>
-                                <span className={`text-[10px] font-medium ${embroideryText.length >= 20 ? 'text-red-500' : 'text-gray-400 dark:text-gray-500'}`}>
-                                    {embroideryText.length}/20
-                                </span>
-                            </div>
-                            <input 
-                                id={`embroidery-${product.id}`}
-                                type="text" 
-                                value={embroideryText}
-                                onChange={(e) => {
-                                    if (e.target.value.length <= 20) {
-                                        setEmbroideryText(e.target.value);
-                                    }
-                                }}
-                                placeholder="Dr. Name / Hospital"
-                                className={`w-full text-xs border rounded px-2 py-1.5 focus:ring-1 transition-colors dark:bg-slate-800 dark:text-white ${
-                                    embroideryText.length >= 20 
-                                    ? 'border-red-300 focus:border-red-500 focus:ring-red-200 bg-red-50 text-red-900 dark:bg-red-900/20 dark:border-red-800 dark:text-red-300' 
-                                    : 'border-gray-300 dark:border-slate-600 focus:border-teal-500 focus:ring-teal-500'
-                                }`}
-                                maxLength={20}
-                                aria-invalid={embroideryText.length >= 20}
-                            />
-                            {embroideryText.length >= 20 && (
-                                <p className="text-[10px] text-red-600 dark:text-red-400 mt-1 animate-pulse font-bold flex items-center" role="alert">
-                                    <AlertCircle className="w-3 h-3 mr-1" />
-                                    Maximum character limit reached.
-                                </p>
-                            )}
-                        </div>
-                        <div>
-                            <label className="block text-[10px] font-medium text-gray-500 dark:text-gray-400 uppercase mb-1.5">
-                                Color: <span className="text-gray-900 dark:text-white ml-1 font-bold">{embroideryColor}</span>
-                            </label>
-                            <div className="flex space-x-2" role="radiogroup" aria-label="Embroidery Color Selection">
-                                {EMBROIDERY_COLORS.map(c => (
-                                    <button
-                                        key={c}
-                                        onClick={() => setEmbroideryColor(c)}
-                                        role="radio"
-                                        aria-checked={embroideryColor === c}
-                                        className={`w-6 h-6 rounded-full border shadow-sm flex items-center justify-center transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 dark:focus:ring-offset-slate-700 ${COLOR_MAP[c]} ${
-                                            embroideryColor === c 
-                                                ? 'ring-2 ring-offset-2 ring-teal-600 ring-offset-slate-50 dark:ring-offset-slate-700 scale-110' 
-                                                : 'hover:scale-110 hover:border-gray-400 dark:hover:border-slate-500 hover:ring-2 hover:ring-offset-1 hover:ring-gray-200 dark:hover:ring-slate-600'
-                                        }`}
-                                        aria-label={`Select ${c} color`}
-                                        title={c}
-                                    >
-                                        {embroideryColor === c && (
-                                            <Check className={`w-3.5 h-3.5 ${['White', 'Gold'].includes(c) ? 'text-gray-900' : 'text-white'} stroke-[3]`} />
-                                        )}
-                                    </button>
-                                ))}
-                            </div>
-                        </div>
-                    </div>
-                )}
-            </div>
-        )}
+        {/* Customization Section Removed */}
 
         {/* Stock Level Indicator */}
         <div className="mb-3">

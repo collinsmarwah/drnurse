@@ -9,7 +9,9 @@ export default defineConfig(({ mode }) => {
     define: {
       // This ensures process.env.API_KEY works in your existing code
       'process.env.API_KEY': JSON.stringify(env.API_KEY),
-      'process.env': process.env
+      // CRITICAL FIX: Do not inject the entire process.env object.
+      // We stub it with an empty object to prevent browser crashes.
+      'process.env': {}
     }
   };
 });

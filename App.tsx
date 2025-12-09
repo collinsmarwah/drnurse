@@ -37,8 +37,7 @@ const App: React.FC = () => {
     // Check local storage or system preference on initial load
     if (typeof window !== 'undefined') {
         const savedMode = localStorage.getItem('drNurseDarkMode');
-        if (savedMode) return JSON.stringify(savedMode) === 'true'; // FIX: Parse string correctly or check existence
-        // Fallback to system preference could go here, but let's default to light for now
+        if (savedMode) return savedMode === 'true';
         return false;
     }
     return false;
@@ -90,6 +89,32 @@ const App: React.FC = () => {
     };
 
     fetchProducts();
+  }, []);
+
+  // Supabase Realtime Subscription
+  useEffect(() => {
+    const channel = supabase
+      .channel('products-updates')
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'products' },
+        (payload) => {
+          if (payload.eventType === 'INSERT') {
+            setProducts((prev) => [...prev, payload.new as Product]);
+          } else if (payload.eventType === 'UPDATE') {
+            setProducts((prev) => 
+              prev.map((p) => (p.id === payload.new.id ? (payload.new as Product) : p))
+            );
+          } else if (payload.eventType === 'DELETE') {
+            setProducts((prev) => prev.filter((p) => p.id !== payload.old.id));
+          }
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, []);
 
   // Load cart from local storage on mount
