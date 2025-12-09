@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { CheckCircle2, ShoppingBag, X } from 'lucide-react';
+import { CheckCircle2, ShoppingBag, X, Truck } from 'lucide-react';
 
 interface CheckoutSuccessModalProps {
   isOpen: boolean;
@@ -45,11 +45,21 @@ const CheckoutSuccessModal: React.FC<CheckoutSuccessModalProps> = ({ isOpen, onC
                     >
                         Continue Shopping
                     </button>
+                    
                     <button
                         type="button"
-                        className="w-full inline-flex justify-center rounded-xl border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-3 text-base font-medium text-gray-700 dark:text-gray-200 shadow-sm hover:bg-gray-50 dark:hover:bg-slate-600 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 transition-all"
+                        className="w-full inline-flex justify-center items-center rounded-xl border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-3 text-base font-medium text-gray-700 dark:text-gray-200 shadow-sm hover:bg-gray-50 dark:hover:bg-slate-600 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 transition-all"
+                        onClick={() => alert("Tracking feature coming soon! Check your email for details.")}
                     >
-                        View Order Details
+                        <Truck className="mr-2 h-5 w-5 text-gray-400 dark:text-gray-300" />
+                        Track Your Order
+                    </button>
+                    
+                    <button
+                        type="button"
+                        className="text-sm text-teal-600 dark:text-teal-400 hover:text-teal-800 dark:hover:text-teal-300 font-medium"
+                    >
+                        View Order Receipt
                     </button>
                 </div>
             </div>

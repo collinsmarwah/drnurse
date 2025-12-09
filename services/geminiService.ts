@@ -59,27 +59,68 @@ export const sendMessageToGemini = async (message: string, history: {role: strin
   }
 };
 
+export const enhanceImagePrompt = async (originalPrompt: string): Promise<string> => {
+    try {
+        if (!process.env.API_KEY) return originalPrompt;
+        
+        const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+        const response = await ai.models.generateContent({
+            model: 'gemini-2.5-flash',
+            contents: `Rewrite the following image description into a detailed, high-quality prompt for an AI image generator. Focus on clarity, fine details, lighting, fabric texture, realism, and medical aesthetics. Keep it concise (under 50 words) but highly descriptive. Input: "${originalPrompt}"`,
+        });
+        
+        return response.text || originalPrompt;
+    } catch (error) {
+        console.warn("Prompt enhancement failed", error);
+        return originalPrompt;
+    }
+};
+
 export const generateDesignImages = async (
   prompt: string, 
   size: '1K' | '2K' | '4K', 
   count: number = 1,
-  aspectRatio: "1:1" | "3:4" | "4:3" | "9:16" | "16:9" = "1:1"
+  aspectRatio: "1:1" | "3:4" | "4:3" | "9:16" | "16:9" = "1:1",
+  baseImage?: string
 ): Promise<string[]> => {
   try {
     // We create a helper to run a single generation
     const generateOne = async (): Promise<string | null> => {
       try {
+        if (!process.env.API_KEY) {
+           console.warn("API Key missing for image generation");
+           return null;
+        }
+
         const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+        
+        const parts: any[] = [{ text: prompt }];
+        
+        // Add image part if baseImage is provided
+        if (baseImage) {
+            const matches = baseImage.match(/^data:(.+);base64,(.+)$/);
+            if (matches) {
+                parts.push({
+                    inlineData: {
+                        mimeType: matches[1],
+                        data: matches[2]
+                    }
+                });
+            }
+        }
+
         const response = await ai.models.generateContent({
           model: 'gemini-3-pro-image-preview',
           contents: {
-            parts: [{ text: prompt }],
+            parts: parts,
           },
           config: {
             imageConfig: {
               imageSize: size,
               aspectRatio: aspectRatio
-            }
+            },
+            // CRITICAL: Add random seed to ensure variations are different
+            seed: Math.floor(Math.random() * 2147483647)
           }
         });
 
@@ -110,6 +151,8 @@ export const generateDesignImages = async (
 
 export const generatePlaceholderImage = async (productName: string): Promise<string | null> => {
   try {
+    if (!process.env.API_KEY) return null;
+
     const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
     const response = await ai.models.generateContent({
       model: 'gemini-2.5-flash-image',
@@ -125,7 +168,7 @@ export const generatePlaceholderImage = async (productName: string): Promise<str
     }
     return null;
   } catch (error) {
-    console.error("Placeholder Generation Error:", error);
+    // Fail silently for placeholders
     return null;
   }
 };

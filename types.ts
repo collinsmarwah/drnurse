@@ -18,6 +18,8 @@ export interface Product {
   image: string;
   featured?: boolean;
   stock: number;
+  rating?: number;
+  reviews?: number;
 }
 
 export interface CustomizationOptions {

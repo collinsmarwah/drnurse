@@ -1,13 +1,13 @@
 
 import React, { useEffect, useState } from 'react';
-import { X, Plus, Check, Scissors, AlertCircle, Ban, CheckCircle2 } from 'lucide-react';
+import { X, Plus, Check, Scissors, AlertCircle, Ban, CheckCircle2, Minus } from 'lucide-react';
 import { Product, CustomizationOptions } from '../types';
 
 interface ProductModalProps {
   product: Product | null;
   isOpen: boolean;
   onClose: () => void;
-  onAddToCart: (product: Product, customization?: CustomizationOptions) => void;
+  onAddToCart: (product: Product, customization?: CustomizationOptions, quantity?: number) => void;
 }
 
 const EMBROIDERY_COLORS = ['White', 'Black', 'Gold', 'Teal', 'Navy'];
@@ -24,6 +24,7 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, isOpen, onClose, o
   const [isCustomizing, setIsCustomizing] = useState(false);
   const [embroideryText, setEmbroideryText] = useState('');
   const [embroideryColor, setEmbroideryColor] = useState(EMBROIDERY_COLORS[0]);
+  const [quantity, setQuantity] = useState(1);
 
   useEffect(() => {
     if (isOpen) {
@@ -32,6 +33,7 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, isOpen, onClose, o
       setIsCustomizing(false);
       setEmbroideryText('');
       setEmbroideryColor(EMBROIDERY_COLORS[0]);
+      setQuantity(1);
     } else {
       document.body.style.overflow = 'unset';
     }
@@ -51,8 +53,20 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, isOpen, onClose, o
       ? { text: embroideryText, color: embroideryColor } 
       : undefined;
     
-    onAddToCart(product, customization);
+    onAddToCart(product, customization, quantity);
     onClose();
+  };
+
+  const incrementQuantity = () => {
+    if (quantity < product.stock) {
+        setQuantity(q => q + 1);
+    }
+  };
+
+  const decrementQuantity = () => {
+    if (quantity > 1) {
+        setQuantity(q => q - 1);
+    }
   };
 
   return (
@@ -134,6 +148,29 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, isOpen, onClose, o
             {/* Customization Section Removed */}
 
             <div className="mt-auto">
+               {!isOutOfStock && (
+                  <div className="flex items-center mb-4">
+                     <span className="text-sm font-medium text-gray-700 dark:text-gray-300 mr-4">Quantity:</span>
+                     <div className="flex items-center border border-gray-200 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700">
+                        <button 
+                            onClick={decrementQuantity}
+                            disabled={quantity <= 1}
+                            className="p-2 text-gray-500 dark:text-gray-400 hover:text-teal-600 dark:hover:text-teal-400 disabled:opacity-50 transition"
+                        >
+                            <Minus className="w-4 h-4" />
+                        </button>
+                        <span className="px-4 text-base font-medium text-gray-900 dark:text-white min-w-[2rem] text-center">{quantity}</span>
+                        <button 
+                            onClick={incrementQuantity}
+                            disabled={quantity >= product.stock}
+                            className="p-2 text-gray-500 dark:text-gray-400 hover:text-teal-600 dark:hover:text-teal-400 disabled:opacity-50 transition"
+                        >
+                            <Plus className="w-4 h-4" />
+                        </button>
+                     </div>
+                  </div>
+               )}
+
               <button
                 type="button"
                 onClick={handleAddToCart}
@@ -149,7 +186,7 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, isOpen, onClose, o
                 ) : (
                     <>
                         <Plus className="mr-2 h-5 w-5" />
-                        Add to Cart
+                        Add {quantity} to Cart
                     </>
                 )}
               </button>

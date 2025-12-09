@@ -1,3 +1,4 @@
+
 import { Product, Category } from './types';
 
 export const STORE_NAME = "Dr. Nurse Collections";
@@ -11,7 +12,9 @@ export const PRODUCTS: Product[] = [
     category: Category.SCRUBS,
     image: 'https://images.pexels.com/photos/5214958/pexels-photo-5214958.jpeg?auto=compress&cs=tinysrgb&w=800',
     featured: true,
-    stock: 3 // Low stock example
+    stock: 3, // Low stock example
+    rating: 4.9,
+    reviews: 124
   },
   {
     id: '2',
@@ -21,7 +24,9 @@ export const PRODUCTS: Product[] = [
     category: Category.SCRUBS,
     image: 'https://images.pexels.com/photos/4033148/pexels-photo-4033148.jpeg?auto=compress&cs=tinysrgb&w=800',
     featured: true,
-    stock: 25
+    stock: 25,
+    rating: 4.7,
+    reviews: 89
   },
   {
     id: '3',
@@ -31,7 +36,9 @@ export const PRODUCTS: Product[] = [
     category: Category.LAB_COATS,
     image: 'https://images.pexels.com/photos/5327580/pexels-photo-5327580.jpeg?auto=compress&cs=tinysrgb&w=800',
     featured: true,
-    stock: 15
+    stock: 15,
+    rating: 4.8,
+    reviews: 56
   },
   {
     id: '4',
@@ -41,7 +48,9 @@ export const PRODUCTS: Product[] = [
     category: Category.SCRUBS,
     image: 'https://images.pexels.com/photos/6129437/pexels-photo-6129437.jpeg?auto=compress&cs=tinysrgb&w=800',
     featured: true,
-    stock: 8
+    stock: 8,
+    rating: 4.6,
+    reviews: 42
   },
   {
     id: '5',
@@ -50,7 +59,9 @@ export const PRODUCTS: Product[] = [
     price: 7800,
     category: Category.SCRUBS,
     image: 'https://images.pexels.com/photos/356040/pexels-photo-356040.jpeg?auto=compress&cs=tinysrgb&w=800',
-    stock: 4 // Low stock example
+    stock: 4, // Low stock example
+    rating: 4.5,
+    reviews: 33
   },
   {
     id: '6',
@@ -59,7 +70,9 @@ export const PRODUCTS: Product[] = [
     price: 8450,
     category: Category.SCRUBS,
     image: 'https://images.pexels.com/photos/8376192/pexels-photo-8376192.jpeg?auto=compress&cs=tinysrgb&w=800',
-    stock: 10
+    stock: 10,
+    rating: 4.9,
+    reviews: 21
   },
   {
     id: '7',
@@ -69,7 +82,9 @@ export const PRODUCTS: Product[] = [
     category: Category.EQUIPMENT,
     image: 'https://images.pexels.com/photos/4021775/pexels-photo-4021775.jpeg?auto=compress&cs=tinysrgb&w=800',
     featured: true,
-    stock: 20
+    stock: 20,
+    rating: 5.0,
+    reviews: 210
   },
   {
     id: '8',
@@ -78,7 +93,9 @@ export const PRODUCTS: Product[] = [
     price: 7150,
     category: Category.UNIFORMS,
     image: 'https://images.pexels.com/photos/5207085/pexels-photo-5207085.jpeg?auto=compress&cs=tinysrgb&w=800',
-    stock: 0 // Out of stock example
+    stock: 0, // Out of stock example
+    rating: 4.4,
+    reviews: 15
   },
   {
     id: '9',
@@ -87,7 +104,9 @@ export const PRODUCTS: Product[] = [
     price: 2340,
     category: Category.ACCESSORIES,
     image: 'https://images.pexels.com/photos/4586994/pexels-photo-4586994.jpeg?auto=compress&cs=tinysrgb&w=800',
-    stock: 50
+    stock: 50,
+    rating: 4.8,
+    reviews: 145
   },
   {
     id: '10',
@@ -96,7 +115,9 @@ export const PRODUCTS: Product[] = [
     price: 1950,
     category: Category.ACCESSORIES,
     image: 'https://images.pexels.com/photos/4386467/pexels-photo-4386467.jpeg?auto=compress&cs=tinysrgb&w=800',
-    stock: 30
+    stock: 30,
+    rating: 4.3,
+    reviews: 78
   },
   {
     id: '11',
@@ -105,7 +126,9 @@ export const PRODUCTS: Product[] = [
     price: 3250,
     category: Category.EQUIPMENT,
     image: 'https://images.pexels.com/photos/5998465/pexels-photo-5998465.jpeg?auto=compress&cs=tinysrgb&w=800',
-    stock: 100
+    stock: 100,
+    rating: 4.6,
+    reviews: 312
   },
   {
     id: '12',
@@ -114,7 +137,9 @@ export const PRODUCTS: Product[] = [
     price: 1560,
     category: Category.EQUIPMENT,
     image: 'https://images.pexels.com/photos/7659865/pexels-photo-7659865.jpeg?auto=compress&cs=tinysrgb&w=800',
-    stock: 45
+    stock: 45,
+    rating: 4.5,
+    reviews: 98
   },
   {
     id: '13',
@@ -123,7 +148,9 @@ export const PRODUCTS: Product[] = [
     price: 4550,
     category: Category.SCRUBS,
     image: 'https://images.pexels.com/photos/3279197/pexels-photo-3279197.jpeg?auto=compress&cs=tinysrgb&w=800',
-    stock: 12
+    stock: 12,
+    rating: 4.9,
+    reviews: 67
   },
   {
     id: '14',
@@ -132,7 +159,9 @@ export const PRODUCTS: Product[] = [
     price: 1300,
     category: Category.CUSTOMIZATION,
     image: 'https://images.pexels.com/photos/7792634/pexels-photo-7792634.jpeg?auto=compress&cs=tinysrgb&w=800',
-    stock: 500
+    stock: 500,
+    rating: 4.7,
+    reviews: 450
   },
   {
     id: '15',
@@ -141,7 +170,9 @@ export const PRODUCTS: Product[] = [
     price: 1040,
     category: Category.CUSTOMIZATION,
     image: 'https://images.pexels.com/photos/4625624/pexels-photo-4625624.jpeg?auto=compress&cs=tinysrgb&w=800',
-    stock: 999
+    stock: 999,
+    rating: 5.0,
+    reviews: 890
   },
   {
     id: '16',
@@ -151,7 +182,9 @@ export const PRODUCTS: Product[] = [
     category: Category.SHOES,
     image: 'https://images.pexels.com/photos/267320/pexels-photo-267320.jpeg?auto=compress&cs=tinysrgb&w=800',
     stock: 40,
-    featured: true
+    featured: true,
+    rating: 4.6,
+    reviews: 112
   },
   {
     id: '17',
@@ -160,7 +193,9 @@ export const PRODUCTS: Product[] = [
     price: 3900,
     category: Category.SHOES,
     image: 'https://images.pexels.com/photos/19090/pexels-photo.jpg?auto=compress&cs=tinysrgb&w=800',
-    stock: 60
+    stock: 60,
+    rating: 4.5,
+    reviews: 230
   },
   {
     id: '18',
@@ -169,7 +204,9 @@ export const PRODUCTS: Product[] = [
     price: 5850,
     category: Category.SHOES,
     image: 'https://images.pexels.com/photos/2529148/pexels-photo-2529148.jpeg?auto=compress&cs=tinysrgb&w=800',
-    stock: 18
+    stock: 18,
+    rating: 4.8,
+    reviews: 54
   },
   {
     id: '19',
@@ -178,6 +215,8 @@ export const PRODUCTS: Product[] = [
     price: 3900,
     category: Category.SHOES,
     image: 'https://images.unsplash.com/photo-1603145733190-59811e523c72?auto=format&fit=crop&q=80&w=800',
-    stock: 50
+    stock: 50,
+    rating: 4.7,
+    reviews: 88
   }
 ];

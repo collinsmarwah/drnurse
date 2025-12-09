@@ -12,7 +12,7 @@ import { supabase } from './lib/supabase';
 import { Product, CartItem, Category, CustomizationOptions } from './types';
 import { 
   Filter, Star, Truck, ShieldCheck, Search, Check,
-  ChevronDown, ArrowUp, ArrowDown, ArrowDownAZ, Sparkles, Loader2
+  ChevronDown, ArrowUp, ArrowDown, ArrowDownAZ, Sparkles, Loader2, Trophy
 } from 'lucide-react';
 
 const App: React.FC = () => {
@@ -78,7 +78,13 @@ const App: React.FC = () => {
           console.warn('Supabase fetch failed or empty, using fallback data.', error);
           setProducts(PRODUCTS);
         } else {
-          setProducts(data as Product[]);
+          // Inject mock ratings for prototype if missing in DB
+          const enhancedData = data.map((p: any) => ({
+            ...p,
+            rating: p.rating || (4 + Math.random() * 1), // Mock rating 4.0-5.0
+            reviews: p.reviews || Math.floor(Math.random() * 50) + 5
+          }));
+          setProducts(enhancedData as Product[]);
         }
       } catch (err) {
         console.error('Unexpected error:', err);
@@ -100,10 +106,15 @@ const App: React.FC = () => {
         { event: '*', schema: 'public', table: 'products' },
         (payload) => {
           if (payload.eventType === 'INSERT') {
-            setProducts((prev) => [...prev, payload.new as Product]);
+            const newProduct = {
+                ...payload.new,
+                rating: payload.new.rating || 4.5,
+                reviews: payload.new.reviews || 0
+            } as Product;
+            setProducts((prev) => [...prev, newProduct]);
           } else if (payload.eventType === 'UPDATE') {
             setProducts((prev) => 
-              prev.map((p) => (p.id === payload.new.id ? (payload.new as Product) : p))
+              prev.map((p) => (p.id === payload.new.id ? { ...p, ...payload.new } as Product : p))
             );
           } else if (payload.eventType === 'DELETE') {
             setProducts((prev) => prev.filter((p) => p.id !== payload.old.id));
@@ -156,7 +167,7 @@ const App: React.FC = () => {
     }, 3000);
   };
 
-  const addToCart = (product: Product, customization?: CustomizationOptions) => {
+  const addToCart = (product: Product, customization?: CustomizationOptions, quantity: number = 1) => {
     setCartItems(prev => {
       const existingItemIndex = prev.findIndex(item => 
         item.id === product.id && 
@@ -167,19 +178,19 @@ const App: React.FC = () => {
         const newItems = [...prev];
         newItems[existingItemIndex] = {
           ...newItems[existingItemIndex],
-          quantity: newItems[existingItemIndex].quantity + 1
+          quantity: newItems[existingItemIndex].quantity + quantity
         };
         return newItems;
       }
       
       const finalPrice = customization ? product.price + 1040 : product.price;
-      return [...prev, { ...product, price: finalPrice, quantity: 1, customization }];
+      return [...prev, { ...product, price: finalPrice, quantity: quantity, customization }];
     });
     showToast(`${product.name}${customization ? ' (Customized)' : ''} added to cart`);
   };
 
-  const handleBuyNow = (product: Product, customization?: CustomizationOptions) => {
-    addToCart(product, customization);
+  const handleBuyNow = (product: Product, customization?: CustomizationOptions, quantity: number = 1) => {
+    addToCart(product, customization, quantity);
     setIsCartOpen(true);
   };
 
@@ -249,6 +260,7 @@ const App: React.FC = () => {
     if (sortOption === 'price-asc') return a.price - b.price;
     if (sortOption === 'price-desc') return b.price - a.price;
     if (sortOption === 'name-asc') return a.name.localeCompare(b.name);
+    if (sortOption === 'rating-desc') return (b.rating || 0) - (a.rating || 0);
     return 0;
   });
 
@@ -256,6 +268,7 @@ const App: React.FC = () => {
 
   const sortOptions = [
     { value: 'default', label: 'Featured', icon: Sparkles },
+    { value: 'rating-desc', label: 'Top Rated', icon: Trophy },
     { value: 'price-asc', label: 'Price: Low to High', icon: ArrowUp },
     { value: 'price-desc', label: 'Price: High to Low', icon: ArrowDown },
     { value: 'name-asc', label: 'Name: A to Z', icon: ArrowDownAZ },
