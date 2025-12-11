@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { X, Plus, Check, Scissors, AlertCircle, Ban, CheckCircle2, Minus } from 'lucide-react';
 import { Product, CustomizationOptions } from '../types';
@@ -83,7 +82,7 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, isOpen, onClose, o
           <div className="absolute right-4 top-4 z-10">
             <button
               type="button"
-              className="rounded-full bg-white/80 dark:bg-slate-900/80 p-2 text-gray-400 hover:text-gray-500 dark:hover:text-gray-300 focus:outline-none focus:ring-2 focus:ring-teal-500 backdrop-blur-sm transition-colors"
+              className="rounded-full bg-white/80 dark:bg-slate-900/80 p-2 text-gray-400 hover:text-gray-500 dark:hover:text-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 backdrop-blur-sm transition-colors"
               onClick={onClose}
             >
               <span className="sr-only">Close</span>
@@ -103,7 +102,7 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, isOpen, onClose, o
           {/* Details Section */}
           <div className="p-8 md:p-10 flex flex-col justify-center md:w-1/2 bg-white dark:bg-slate-800">
             <div className="mb-2">
-               <span className="inline-flex items-center rounded-full bg-teal-50 dark:bg-teal-900/30 px-2.5 py-0.5 text-xs font-medium text-teal-700 dark:text-teal-300">
+               <span className="inline-flex items-center rounded-full bg-blue-50 dark:bg-blue-900/30 px-2.5 py-0.5 text-xs font-medium text-blue-700 dark:text-blue-300">
                  {product.category}
                </span>
                {product.featured && (
@@ -117,7 +116,7 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, isOpen, onClose, o
               {product.name}
             </h2>
             
-            <p className="text-3xl tracking-tight text-teal-600 dark:text-teal-400 font-bold mb-4">
+            <p className="text-3xl tracking-tight text-blue-600 dark:text-blue-400 font-bold mb-4">
               KES {product.price.toLocaleString()}
             </p>
 
@@ -155,7 +154,7 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, isOpen, onClose, o
                         <button 
                             onClick={decrementQuantity}
                             disabled={quantity <= 1}
-                            className="p-2 text-gray-500 dark:text-gray-400 hover:text-teal-600 dark:hover:text-teal-400 disabled:opacity-50 transition"
+                            className="p-2 text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 disabled:opacity-50 transition"
                         >
                             <Minus className="w-4 h-4" />
                         </button>
@@ -163,7 +162,7 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, isOpen, onClose, o
                         <button 
                             onClick={incrementQuantity}
                             disabled={quantity >= product.stock}
-                            className="p-2 text-gray-500 dark:text-gray-400 hover:text-teal-600 dark:hover:text-teal-400 disabled:opacity-50 transition"
+                            className="p-2 text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 disabled:opacity-50 transition"
                         >
                             <Plus className="w-4 h-4" />
                         </button>
@@ -178,7 +177,7 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, isOpen, onClose, o
                 className={`flex w-full items-center justify-center rounded-xl border border-transparent px-8 py-4 text-base font-bold text-white shadow-lg transition-all transform active:scale-95 ${
                     isOutOfStock || (isCustomizing && !embroideryText.trim())
                     ? 'bg-gray-300 dark:bg-slate-700 text-gray-500 dark:text-gray-400 cursor-not-allowed'
-                    : 'bg-gray-900 dark:bg-slate-950 hover:bg-teal-600 dark:hover:bg-teal-500 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2'
+                    : 'bg-gray-900 dark:bg-slate-950 hover:bg-blue-600 dark:hover:bg-blue-500 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2'
                 }`}
               >
                 {isOutOfStock ? (

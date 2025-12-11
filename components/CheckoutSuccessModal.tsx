@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { CheckCircle2, ShoppingBag, X, Truck } from 'lucide-react';
 
@@ -25,8 +24,8 @@ const CheckoutSuccessModal: React.FC<CheckoutSuccessModalProps> = ({ isOpen, onC
             </button>
 
             <div className="flex flex-col items-center justify-center text-center">
-                <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-teal-100 dark:bg-teal-900/30 mb-6 animate-bounce">
-                    <CheckCircle2 className="h-10 w-10 text-teal-600 dark:text-teal-400" aria-hidden="true" />
+                <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900/30 mb-6 animate-bounce">
+                    <CheckCircle2 className="h-10 w-10 text-blue-600 dark:text-blue-400" aria-hidden="true" />
                 </div>
                 
                 <h3 className="text-2xl font-bold leading-6 text-gray-900 dark:text-white mb-2" id="modal-title">
@@ -40,7 +39,7 @@ const CheckoutSuccessModal: React.FC<CheckoutSuccessModalProps> = ({ isOpen, onC
                 <div className="w-full space-y-3">
                     <button
                         type="button"
-                        className="w-full inline-flex justify-center rounded-xl border border-transparent bg-teal-600 px-4 py-3 text-base font-bold text-white shadow-sm hover:bg-teal-700 dark:hover:bg-teal-500 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 transition-all"
+                        className="w-full inline-flex justify-center rounded-xl border border-transparent bg-blue-600 px-4 py-3 text-base font-bold text-white shadow-sm hover:bg-blue-700 dark:hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all"
                         onClick={onClose}
                     >
                         Continue Shopping
@@ -48,7 +47,7 @@ const CheckoutSuccessModal: React.FC<CheckoutSuccessModalProps> = ({ isOpen, onC
                     
                     <button
                         type="button"
-                        className="w-full inline-flex justify-center items-center rounded-xl border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-3 text-base font-medium text-gray-700 dark:text-gray-200 shadow-sm hover:bg-gray-50 dark:hover:bg-slate-600 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 transition-all"
+                        className="w-full inline-flex justify-center items-center rounded-xl border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-3 text-base font-medium text-gray-700 dark:text-gray-200 shadow-sm hover:bg-gray-50 dark:hover:bg-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all"
                         onClick={() => alert("Tracking feature coming soon! Check your email for details.")}
                     >
                         <Truck className="mr-2 h-5 w-5 text-gray-400 dark:text-gray-300" />
@@ -57,7 +56,7 @@ const CheckoutSuccessModal: React.FC<CheckoutSuccessModalProps> = ({ isOpen, onC
                     
                     <button
                         type="button"
-                        className="text-sm text-teal-600 dark:text-teal-400 hover:text-teal-800 dark:hover:text-teal-300 font-medium"
+                        className="text-sm text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 font-medium"
                     >
                         View Order Receipt
                     </button>

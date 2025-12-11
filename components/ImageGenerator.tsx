@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { X, Sparkles, Image as ImageIcon, Download, Key, Palette, Sliders, AlertCircle, Copy, Layers, WifiOff, ShieldAlert, PenLine, Crop, Tag, Maximize, MapPin, Upload, Zap, Sun, BoxSelect, Wand2, Info } from 'lucide-react';
 import { generateDesignImages, enhanceImagePrompt } from '../services/geminiService';
@@ -60,6 +59,7 @@ const MATERIAL_OPTIONS = [
 
 const CATEGORIES = [
   "No Category",
+  "Brand Logo",
   "Scrubs",
   "Uniforms",
   "Lab Coats",
@@ -156,7 +156,14 @@ const ImageGenerator: React.FC<ImageGeneratorProps> = ({ isOpen, onClose }) => {
 
     // Construct the refined prompt
     let fullPrompt = prompt;
-    if (category !== "No Category") fullPrompt = `Category: ${category}. ${fullPrompt}`;
+    
+    // Logo specific prompt engineering
+    if (category === "Brand Logo") {
+        fullPrompt = `Design a professional, modern brand logo for a medical company. ${fullPrompt}. Vector graphics, iconic, simple, scalable, flat design, white background.`;
+    } else if (category !== "No Category") {
+        fullPrompt = `Category: ${category}. ${fullPrompt}`;
+    }
+
     if (style !== "No Style") fullPrompt += `. Style: ${style}`;
     if (mood !== "No Mood") fullPrompt += `. Mood: ${mood}`;
     if (lighting !== "No Lighting") fullPrompt += `. Lighting: ${lighting}`;
@@ -245,12 +252,12 @@ const ImageGenerator: React.FC<ImageGeneratorProps> = ({ isOpen, onClose }) => {
 
         <div className="inline-block bg-white dark:bg-slate-800 rounded-2xl text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-2xl w-full relative z-10">
           {/* Header */}
-          <div className="bg-gradient-to-r from-teal-600 to-teal-800 px-6 py-4 flex justify-between items-center">
+          <div className="bg-gradient-to-r from-blue-600 to-blue-800 px-6 py-4 flex justify-between items-center">
             <h3 className="text-lg leading-6 font-medium text-white flex items-center">
               <Sparkles className="h-5 w-5 mr-2 text-yellow-300" />
               AI Design Studio
             </h3>
-            <button onClick={onClose} className="text-teal-100 hover:text-white focus:outline-none">
+            <button onClick={onClose} className="text-blue-100 hover:text-white focus:outline-none">
               <X className="h-6 w-6" />
             </button>
           </div>
@@ -258,19 +265,19 @@ const ImageGenerator: React.FC<ImageGeneratorProps> = ({ isOpen, onClose }) => {
           <div className="px-6 py-6 text-gray-900 dark:text-white">
             {!hasApiKey ? (
               <div className="text-center py-8">
-                <Key className="h-12 w-12 text-teal-500 mx-auto mb-4" />
+                <Key className="h-12 w-12 text-blue-500 mx-auto mb-4" />
                 <h4 className="text-lg font-medium text-gray-900 dark:text-white mb-2">API Key Required</h4>
                 <p className="text-sm text-gray-500 dark:text-gray-400 mb-6">
                   To use high-quality image generation, you need to select a paid API key from your Google Cloud project.
                 </p>
                 <button
                   onClick={handleSelectKey}
-                  className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500"
+                  className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                 >
                   Select API Key
                 </button>
                 <div className="mt-4 text-xs text-gray-400">
-                    <a href="https://ai.google.dev/gemini-api/docs/billing" target="_blank" rel="noopener noreferrer" className="underline hover:text-teal-600">
+                    <a href="https://ai.google.dev/gemini-api/docs/billing" target="_blank" rel="noopener noreferrer" className="underline hover:text-blue-600">
                         View billing documentation
                     </a>
                 </div>
@@ -287,9 +294,9 @@ const ImageGenerator: React.FC<ImageGeneratorProps> = ({ isOpen, onClose }) => {
                         <div className="flex items-center">
                             <label htmlFor="prompt" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mr-2">Prompt</label>
                             <div className="relative group">
-                                <Info className="h-4 w-4 text-gray-400 hover:text-teal-500 cursor-help transition-colors" />
+                                <Info className="h-4 w-4 text-gray-400 hover:text-blue-500 cursor-help transition-colors" />
                                 <div className="absolute left-0 bottom-full mb-2 w-64 p-3 bg-gray-900 dark:bg-slate-950 border border-gray-700 text-white text-xs rounded-lg shadow-xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50 animate-in fade-in zoom-in-95">
-                                    <h5 className="font-bold mb-1 text-teal-400">Pro Tips:</h5>
+                                    <h5 className="font-bold mb-1 text-blue-400">Pro Tips:</h5>
                                     <ul className="list-disc pl-3 space-y-1 text-gray-300">
                                         <li><strong>Subject:</strong> "Blue scrubs", "Golden stethoscope"</li>
                                         <li><strong>Context:</strong> "Folded neatly", "On a marble desk"</li>
@@ -317,15 +324,15 @@ const ImageGenerator: React.FC<ImageGeneratorProps> = ({ isOpen, onClose }) => {
                         <textarea
                           id="prompt"
                           rows={3}
-                          className={`block w-full border rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm transition-all dark:bg-slate-700 dark:text-white ${
-                              !prompt.trim() ? 'border-gray-300 dark:border-slate-600' : 'border-teal-500 ring-1 ring-teal-500 bg-teal-50/10 dark:bg-teal-900/20'
+                          className={`block w-full border rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm transition-all dark:bg-slate-700 dark:text-white ${
+                              !prompt.trim() ? 'border-gray-300 dark:border-slate-600' : 'border-blue-500 ring-1 ring-blue-500 bg-blue-50/10 dark:bg-blue-900/20'
                           }`}
                           placeholder="E.g., A futuristic nurse uniform with neon blue piping"
                           value={prompt}
                           onChange={(e) => setPrompt(e.target.value)}
                         />
                         {!prompt.trim() && (
-                            <div className="absolute top-3 right-3 text-teal-500 opacity-50 pointer-events-none animate-pulse">
+                            <div className="absolute top-3 right-3 text-blue-500 opacity-50 pointer-events-none animate-pulse">
                                 <PenLine className="h-5 w-5" />
                             </div>
                         )}
@@ -336,12 +343,12 @@ const ImageGenerator: React.FC<ImageGeneratorProps> = ({ isOpen, onClose }) => {
                   <div>
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Reference Image (Optional)</label>
                     {!uploadedImage ? (
-                        <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 dark:border-slate-600 border-dashed rounded-md cursor-pointer hover:border-teal-500 dark:hover:border-teal-400 transition-colors"
+                        <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 dark:border-slate-600 border-dashed rounded-md cursor-pointer hover:border-blue-500 dark:hover:border-blue-400 transition-colors"
                              onClick={() => document.getElementById('file-upload')?.click()}>
                             <div className="space-y-1 text-center">
                                 <Upload className="mx-auto h-12 w-12 text-gray-400 dark:text-gray-500" />
                                 <div className="flex text-sm text-gray-600 dark:text-gray-400 justify-center">
-                                    <span className="relative cursor-pointer bg-white dark:bg-slate-800 rounded-md font-medium text-teal-600 dark:text-teal-400 hover:text-teal-500 focus-within:outline-none">
+                                    <span className="relative cursor-pointer bg-white dark:bg-slate-800 rounded-md font-medium text-blue-600 dark:text-blue-400 hover:text-blue-500 focus-within:outline-none">
                                         Upload a file
                                     </span>
                                     <p className="pl-1">or drag and drop</p>
@@ -374,7 +381,7 @@ const ImageGenerator: React.FC<ImageGeneratorProps> = ({ isOpen, onClose }) => {
                         id="category"
                         value={category}
                         onChange={(e) => setCategory(e.target.value)}
-                        className="block w-full pl-2 pr-8 py-1.5 text-xs border-gray-300 dark:border-slate-600 dark:bg-slate-800 dark:text-white focus:outline-none focus:ring-teal-500 focus:border-teal-500 rounded-md"
+                        className="block w-full pl-2 pr-8 py-1.5 text-xs border-gray-300 dark:border-slate-600 dark:bg-slate-800 dark:text-white focus:outline-none focus:ring-blue-500 focus:border-blue-500 rounded-md"
                       >
                         {CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
                       </select>
@@ -388,7 +395,7 @@ const ImageGenerator: React.FC<ImageGeneratorProps> = ({ isOpen, onClose }) => {
                         id="style"
                         value={style}
                         onChange={(e) => setStyle(e.target.value)}
-                         className="block w-full pl-2 pr-8 py-1.5 text-xs border-gray-300 dark:border-slate-600 dark:bg-slate-800 dark:text-white focus:outline-none focus:ring-teal-500 focus:border-teal-500 rounded-md"
+                         className="block w-full pl-2 pr-8 py-1.5 text-xs border-gray-300 dark:border-slate-600 dark:bg-slate-800 dark:text-white focus:outline-none focus:ring-blue-500 focus:border-blue-500 rounded-md"
                       >
                         {STYLES.map(s => <option key={s} value={s}>{s}</option>)}
                       </select>
@@ -402,7 +409,7 @@ const ImageGenerator: React.FC<ImageGeneratorProps> = ({ isOpen, onClose }) => {
                         id="mood"
                         value={mood}
                         onChange={(e) => setMood(e.target.value)}
-                        className="block w-full pl-2 pr-8 py-1.5 text-xs border-gray-300 dark:border-slate-600 dark:bg-slate-800 dark:text-white focus:outline-none focus:ring-teal-500 focus:border-teal-500 rounded-md"
+                        className="block w-full pl-2 pr-8 py-1.5 text-xs border-gray-300 dark:border-slate-600 dark:bg-slate-800 dark:text-white focus:outline-none focus:ring-blue-500 focus:border-blue-500 rounded-md"
                       >
                         {MOODS.map(m => <option key={m} value={m}>{m}</option>)}
                       </select>
@@ -416,7 +423,7 @@ const ImageGenerator: React.FC<ImageGeneratorProps> = ({ isOpen, onClose }) => {
                         id="lighting"
                         value={lighting}
                         onChange={(e) => setLighting(e.target.value)}
-                        className="block w-full pl-2 pr-8 py-1.5 text-xs border-gray-300 dark:border-slate-600 dark:bg-slate-800 dark:text-white focus:outline-none focus:ring-teal-500 focus:border-teal-500 rounded-md"
+                        className="block w-full pl-2 pr-8 py-1.5 text-xs border-gray-300 dark:border-slate-600 dark:bg-slate-800 dark:text-white focus:outline-none focus:ring-blue-500 focus:border-blue-500 rounded-md"
                       >
                         {LIGHTING_OPTIONS.map(l => <option key={l} value={l}>{l}</option>)}
                       </select>
@@ -430,7 +437,7 @@ const ImageGenerator: React.FC<ImageGeneratorProps> = ({ isOpen, onClose }) => {
                         id="material"
                         value={material}
                         onChange={(e) => setMaterial(e.target.value)}
-                        className="block w-full pl-2 pr-8 py-1.5 text-xs border-gray-300 dark:border-slate-600 dark:bg-slate-800 dark:text-white focus:outline-none focus:ring-teal-500 focus:border-teal-500 rounded-md"
+                        className="block w-full pl-2 pr-8 py-1.5 text-xs border-gray-300 dark:border-slate-600 dark:bg-slate-800 dark:text-white focus:outline-none focus:ring-blue-500 focus:border-blue-500 rounded-md"
                       >
                         {MATERIAL_OPTIONS.map(m => <option key={m} value={m}>{m}</option>)}
                       </select>
@@ -452,7 +459,7 @@ const ImageGenerator: React.FC<ImageGeneratorProps> = ({ isOpen, onClose }) => {
                                         onClick={() => setSize(s)}
                                         className={`flex-1 text-xs py-1.5 px-2 first:rounded-l-md last:rounded-r-md border border-gray-300 dark:border-slate-500 ${
                                             size === s 
-                                            ? 'bg-teal-600 text-white border-teal-600 z-10' 
+                                            ? 'bg-blue-600 text-white border-blue-600 z-10' 
                                             : 'bg-white dark:bg-slate-800 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-600'
                                         }`}
                                     >
@@ -473,7 +480,7 @@ const ImageGenerator: React.FC<ImageGeneratorProps> = ({ isOpen, onClose }) => {
                                         onClick={() => setAspectRatio(ratio)}
                                         className={`flex-1 min-w-[3rem] text-xs py-1.5 px-1 rounded-md border border-gray-300 dark:border-slate-500 transition-colors ${
                                             aspectRatio === ratio
-                                            ? 'bg-teal-600 text-white border-teal-600'
+                                            ? 'bg-blue-600 text-white border-blue-600'
                                             : 'bg-white dark:bg-slate-800 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-600'
                                         }`}
                                         title={ratio === "1:1" ? "Square" : ratio === "16:9" ? "Landscape" : ratio === "9:16" ? "Portrait" : ""}
@@ -489,7 +496,7 @@ const ImageGenerator: React.FC<ImageGeneratorProps> = ({ isOpen, onClose }) => {
                                 <div className="flex items-center">
                                     <Layers className="h-3 w-3 mr-1" /> Variations
                                 </div>
-                                <span className="bg-teal-100 dark:bg-teal-900 text-teal-800 dark:text-teal-200 text-[10px] font-bold px-1.5 py-0.5 rounded-md">
+                                <span className="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-[10px] font-bold px-1.5 py-0.5 rounded-md">
                                     {count}
                                 </span>
                             </label>
@@ -502,7 +509,7 @@ const ImageGenerator: React.FC<ImageGeneratorProps> = ({ isOpen, onClose }) => {
                                     step="1"
                                     value={count}
                                     onChange={(e) => setCount(parseInt(e.target.value))}
-                                    className="w-full h-1.5 bg-gray-200 dark:bg-slate-600 rounded-lg appearance-none cursor-pointer accent-teal-600 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-1 dark:focus:ring-offset-slate-800"
+                                    className="w-full h-1.5 bg-gray-200 dark:bg-slate-600 rounded-lg appearance-none cursor-pointer accent-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1 dark:focus:ring-offset-slate-800"
                                 />
                                 <span className="text-[10px] text-gray-400 font-medium">4</span>
                             </div>
@@ -550,7 +557,7 @@ const ImageGenerator: React.FC<ImageGeneratorProps> = ({ isOpen, onClose }) => {
                   <button
                     onClick={handleGenerate}
                     disabled={isLoading || !prompt.trim()}
-                    className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                    className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
                   >
                     {isLoading ? (
                       <>
@@ -581,7 +588,7 @@ const ImageGenerator: React.FC<ImageGeneratorProps> = ({ isOpen, onClose }) => {
                             onLoad={(e) => (e.currentTarget.style.opacity = '1')}
                             />
                             {generatedImages.length > 1 && (
-                                <div className="absolute top-2 left-2 px-2 py-0.5 bg-teal-900/80 backdrop-blur-sm text-teal-100 text-[10px] font-bold uppercase tracking-wider rounded-md shadow-sm border border-teal-700/50 z-10">
+                                <div className="absolute top-2 left-2 px-2 py-0.5 bg-blue-900/80 backdrop-blur-sm text-blue-100 text-[10px] font-bold uppercase tracking-wider rounded-md shadow-sm border border-blue-700/50 z-10">
                                     Var {idx + 1}
                                 </div>
                             )}
@@ -596,7 +603,7 @@ const ImageGenerator: React.FC<ImageGeneratorProps> = ({ isOpen, onClose }) => {
                                 <a
                                     href={imgSrc}
                                     download={`dr-nurse-design-${idx + 1}.png`}
-                                    className="bg-teal-600 text-white p-2.5 rounded-full shadow-lg hover:bg-teal-700 transition"
+                                    className="bg-blue-600 text-white p-2.5 rounded-full shadow-lg hover:bg-blue-700 transition"
                                     title="Download Image"
                                 >
                                     <Download className="h-4 w-4" />

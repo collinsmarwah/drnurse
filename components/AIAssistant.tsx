@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { MessageSquareText, Send, X, Bot, User } from 'lucide-react';
 import { sendMessageToGemini } from '../services/geminiService';
@@ -65,7 +64,7 @@ const AIAssistant: React.FC = () => {
       {!isOpen && (
         <button
           onClick={toggleOpen}
-          className="bg-teal-600 hover:bg-teal-700 text-white rounded-full p-4 shadow-lg transition-transform hover:scale-110 flex items-center justify-center group"
+          className="bg-blue-600 hover:bg-blue-700 text-white rounded-full p-4 shadow-lg transition-transform hover:scale-110 flex items-center justify-center group"
         >
           <MessageSquareText className="h-6 w-6" />
           <span className="max-w-0 overflow-hidden whitespace-nowrap group-hover:max-w-xs group-hover:ml-2 transition-all duration-300 ease-in-out">
@@ -77,12 +76,12 @@ const AIAssistant: React.FC = () => {
       {isOpen && (
         <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl w-80 sm:w-96 flex flex-col border border-gray-200 dark:border-slate-700 overflow-hidden h-[500px] transition-colors duration-300">
           {/* Header */}
-          <div className="bg-teal-600 p-4 flex justify-between items-center text-white">
+          <div className="bg-blue-600 p-4 flex justify-between items-center text-white">
             <div className="flex items-center space-x-2">
               <Bot className="h-5 w-5" />
               <h3 className="font-semibold">Dr. Nurse Assistant</h3>
             </div>
-            <button onClick={toggleOpen} className="hover:text-teal-200">
+            <button onClick={toggleOpen} className="hover:text-blue-200">
               <X className="h-5 w-5" />
             </button>
           </div>
@@ -97,7 +96,7 @@ const AIAssistant: React.FC = () => {
                 <div
                   className={`max-w-[80%] rounded-2xl px-4 py-2 text-sm shadow-sm ${
                     msg.role === 'user'
-                      ? 'bg-teal-600 text-white rounded-br-none'
+                      ? 'bg-blue-600 text-white rounded-br-none'
                       : 'bg-white dark:bg-slate-700 text-gray-800 dark:text-gray-100 border border-gray-200 dark:border-slate-600 rounded-bl-none'
                   }`}
                 >
@@ -123,12 +122,12 @@ const AIAssistant: React.FC = () => {
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKeyPress}
               placeholder="Ask about scrubs, sizes..."
-              className="flex-1 bg-gray-100 dark:bg-slate-700 border-0 rounded-full px-4 py-2 text-sm focus:ring-2 focus:ring-teal-500 focus:bg-white dark:focus:bg-slate-600 text-gray-900 dark:text-white transition-all outline-none placeholder-gray-500 dark:placeholder-gray-400"
+              className="flex-1 bg-gray-100 dark:bg-slate-700 border-0 rounded-full px-4 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:bg-white dark:focus:bg-slate-600 text-gray-900 dark:text-white transition-all outline-none placeholder-gray-500 dark:placeholder-gray-400"
             />
             <button
               onClick={handleSend}
               disabled={isLoading || !input.trim()}
-              className="bg-teal-600 hover:bg-teal-700 text-white p-2 rounded-full disabled:opacity-50 disabled:cursor-not-allowed transition"
+              className="bg-blue-600 hover:bg-blue-700 text-white p-2 rounded-full disabled:opacity-50 disabled:cursor-not-allowed transition"
             >
               <Send className="h-4 w-4" />
             </button>
