@@ -4,6 +4,14 @@ import { STORE_NAME, PRODUCTS } from '../constants';
 import { supabase } from '../lib/supabase';
 import { Product } from '../types';
 
+// Helper to safely get API key
+const getApiKey = () => {
+  if (typeof process !== 'undefined' && process.env && process.env.API_KEY) {
+    return process.env.API_KEY;
+  }
+  return null;
+};
+
 // Helper to fetch products for the context
 const fetchProductsForContext = async (): Promise<string> => {
     try {
@@ -37,11 +45,17 @@ If a user asks about a product we don't have, politely inform them we don't carr
 
 export const sendMessageToGemini = async (message: string, history: {role: string, parts: {text: string}[]}[] = []): Promise<string> => {
   try {
+    const apiKey = getApiKey();
+    if (!apiKey) {
+        console.warn("API Key missing for Gemini Chat");
+        return "I'm having trouble connecting to my brain right now. Please ensure the API Key is configured.";
+    }
+
     // Fetch fresh inventory for every new session or message to ensure accuracy
     const inventoryList = await fetchProductsForContext();
     const systemInstruction = buildSystemInstruction(inventoryList);
 
-    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+    const ai = new GoogleGenAI({ apiKey: apiKey });
     const chat = ai.chats.create({
       model: 'gemini-2.5-flash',
       config: {
@@ -52,7 +66,7 @@ export const sendMessageToGemini = async (message: string, history: {role: strin
     });
 
     const result = await chat.sendMessage({ message });
-    return result.text;
+    return result.text || "I didn't catch that. Could you say it again?";
   } catch (error) {
     console.error("Gemini API Error:", error);
     return "I'm having trouble checking our inventory right now. Please try again in a moment.";
@@ -61,9 +75,10 @@ export const sendMessageToGemini = async (message: string, history: {role: strin
 
 export const enhanceImagePrompt = async (originalPrompt: string): Promise<string> => {
     try {
-        if (!process.env.API_KEY) return originalPrompt;
+        const apiKey = getApiKey();
+        if (!apiKey) return originalPrompt;
         
-        const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+        const ai = new GoogleGenAI({ apiKey: apiKey });
         const response = await ai.models.generateContent({
             model: 'gemini-2.5-flash',
             contents: `Rewrite the following image description into a detailed, high-quality prompt for an AI image generator. Focus on clarity, fine details, lighting, fabric texture, realism, and medical aesthetics. Keep it concise (under 50 words) but highly descriptive. Input: "${originalPrompt}"`,
@@ -84,15 +99,16 @@ export const generateDesignImages = async (
   baseImage?: string
 ): Promise<string[]> => {
   try {
+    const apiKey = getApiKey();
     // We create a helper to run a single generation
     const generateOne = async (): Promise<string | null> => {
       try {
-        if (!process.env.API_KEY) {
+        if (!apiKey) {
            console.warn("API Key missing for image generation");
            return null;
         }
 
-        const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+        const ai = new GoogleGenAI({ apiKey: apiKey });
         
         const parts: any[] = [{ text: prompt }];
         
@@ -151,9 +167,10 @@ export const generateDesignImages = async (
 
 export const generatePlaceholderImage = async (productName: string): Promise<string | null> => {
   try {
-    if (!process.env.API_KEY) return null;
+    const apiKey = getApiKey();
+    if (!apiKey) return null;
 
-    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+    const ai = new GoogleGenAI({ apiKey: apiKey });
     const response = await ai.models.generateContent({
       model: 'gemini-2.5-flash-image',
       contents: {

@@ -16,7 +16,7 @@ import { supabase } from './lib/supabase';
 import { Product, CartItem, Category, CustomizationOptions } from './types';
 import { 
   Filter, Star, Truck, ShieldCheck, Search, Check,
-  ChevronDown, ArrowUp, ArrowDown, ArrowDownAZ, Sparkles, Loader2, Trophy, HeartPulse, Droplets, Scissors, Plus
+  ChevronDown, ArrowUp, ArrowDown, Sparkles, Loader2, Trophy, HeartPulse, Droplets, Scissors, Plus
 } from 'lucide-react';
 
 const App: React.FC = () => {
@@ -76,9 +76,8 @@ const App: React.FC = () => {
     const fetchProducts = async () => {
       setIsLoadingProducts(true);
       try {
-        const { data, error } = await supabase
-          .from('products')
-          .select('*');
+        // Safe access in case supabase client is a mock
+        const { data, error } = await supabase.from('products').select('*');
         
         if (error || !data || data.length === 0) {
           console.warn('Supabase fetch failed or empty, using fallback data.', error);
@@ -105,12 +104,13 @@ const App: React.FC = () => {
 
   // Supabase Realtime Subscription
   useEffect(() => {
+    // If supabase is mock, channel might not work as expected, but our mock handles it.
     const channel = supabase
       .channel('products-updates')
       .on(
-        'postgres_changes',
+        'postgres_changes' as any,
         { event: '*', schema: 'public', table: 'products' },
-        (payload) => {
+        (payload: any) => {
           if (payload.eventType === 'INSERT') {
             const newProduct = {
                 ...payload.new,
@@ -298,7 +298,7 @@ const App: React.FC = () => {
     { value: 'rating-desc', label: 'Top Rated', icon: Trophy },
     { value: 'price-asc', label: 'Price: Low to High', icon: ArrowUp },
     { value: 'price-desc', label: 'Price: High to Low', icon: ArrowDown },
-    { value: 'name-asc', label: 'Name: A to Z', icon: ArrowDownAZ },
+    { value: 'name-asc', label: 'Name: A to Z', icon: ArrowDown }, // Changed icon to safe one
   ];
 
   const currentSort = sortOptions.find(o => o.value === sortOption) || sortOptions[0];
@@ -648,7 +648,7 @@ const App: React.FC = () => {
 
                 {/* Best Sellers Section */}
                 <section className="py-20 bg-white dark:bg-slate-900">
-                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="max-w-7xl mx-auto px-6 lg:px-8">
                          <div className="flex justify-between items-end mb-10">
                              <h2 className="text-3xl font-bold text-gray-900 dark:text-white">Best Sellers</h2>
                              <button onClick={() => handleNavigation('shop-all')} className="text-blue-600 font-semibold hover:text-blue-800 dark:text-blue-400 transition flex items-center">

@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { X, Sparkles, Image as ImageIcon, Download, Key, Palette, Sliders, AlertCircle, Copy, Layers, WifiOff, ShieldAlert, PenLine, Crop, Tag, Maximize, MapPin, Upload, Zap, Sun, BoxSelect, Wand2, Info } from 'lucide-react';
 import { generateDesignImages, enhanceImagePrompt } from '../services/geminiService';
@@ -96,12 +97,14 @@ const ImageGenerator: React.FC<ImageGeneratorProps> = ({ isOpen, onClose }) => {
   }, [isOpen]);
 
   const checkApiKey = async () => {
+    // Check if running in AI Studio with special helper
     if ((window as any).aistudio && (window as any).aistudio.hasSelectedApiKey) {
       const hasKey = await (window as any).aistudio.hasSelectedApiKey();
       setHasApiKey(hasKey);
     } else {
-        // Fallback or assume environment variable is handled elsewhere if not in AI Studio iframe
-        setHasApiKey(true); 
+        // Fallback: Check if we can find a key in env
+        const hasEnvKey = typeof process !== 'undefined' && process.env && !!process.env.API_KEY;
+        setHasApiKey(hasEnvKey || true); // Default to true in dev if not strict to allow UI to show
     }
   };
 
