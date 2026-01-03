@@ -22,6 +22,13 @@ export interface Product {
   reviews?: number;
 }
 
+export interface GalleryItem {
+  id: string;
+  src: string;
+  title: string;
+  category: string;
+}
+
 export interface CustomizationOptions {
   text: string;
   color: string;

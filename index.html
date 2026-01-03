@@ -4,10 +4,52 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dr. Nurse Collections</title>
-    <link rel="icon" href="https://instagram.fdar5-1.fna.fbcdn.net/v/t51.2885-19/75207276_523817131535329_1646328524392366080_n.jpg?efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby4xMDgwLmMyIn0&_nc_ht=instagram.fdar5-1.fna.fbcdn.net&_nc_cat=101&_nc_oc=Q6cZ2QFa4dcIWaLBI3gianHmrQl2vwYofP_N77FGF8c4qwqEDf8-ykn-8fmGLedNGsBtUU4&_nc_ohc=PhA3dyhbSTAQ7kNvwFAADsV&_nc_gid=HayWpHuaUbSNAtSCT3plUw&edm=AP4sbd4BAAAA&ccb=7-5&oh=00_AfmLKUQU5HHBJpzefursfzirkeBGDuzbSKJhkMZ7m-FOiA&oe=6941077F&_nc_sid=7a9f4b" />
+    
+    <!-- Primary Meta Tags -->
+    <title>Dr. Nurse Collections | Premium Medical Attire & Equipment</title>
+    <meta name="title" content="Dr. Nurse Collections | Premium Medical Attire & Equipment" />
+    <meta name="description" content="Premium medical attire shop featuring scrubs, uniforms, lab coats, stethoscopes, and customization services. High-quality gear for healthcare professionals." />
+    <meta name="keywords" content="medical scrubs, nursing uniforms, lab coats, stethoscopes, medical equipment, healthcare apparel, doctor uniforms, nurse scrubs, Kenya medical shop" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Dr. Nurse Collections | Premium Medical Attire & Equipment" />
+    <meta property="og:description" content="Premium medical attire shop featuring scrubs, uniforms, lab coats, stethoscopes, and customization services. High-quality gear for healthcare professionals." />
+    <meta property="og:image" content="https://res.cloudinary.com/dldtmvsow/image/upload/v1767442197/566824313_18095852842754000_7895602823733046653_n_hogek9.jpg" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:title" content="Dr. Nurse Collections | Premium Medical Attire & Equipment" />
+    <meta property="twitter:description" content="Premium medical attire shop featuring scrubs, uniforms, lab coats, stethoscopes, and customization services. High-quality gear for healthcare professionals." />
+    <meta property="twitter:image" content="https://res.cloudinary.com/dldtmvsow/image/upload/v1767442197/566824313_18095852842754000_7895602823733046653_n_hogek9.jpg" />
+
+    <link rel="icon" href="https://res.cloudinary.com/dldtmvsow/image/upload/v1767448355/images_qgnmxn.png" />
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <!-- Global Error Handler to catch Script Errors causing Blank Page -->
+    <script>
+      window.onerror = function(message, source, lineno, colno, error) {
+        console.error("Global Error Caught:", message, source, lineno, colno, error);
+        const root = document.getElementById('root');
+        // Only show error if root is empty (meaning React didn't mount)
+        if (root && !root.hasChildNodes()) {
+            root.innerHTML = `
+                <div style="padding: 20px; font-family: sans-serif; color: #ef4444; text-align: center; margin-top: 50px;">
+                    <h1 style="font-size: 24px; margin-bottom: 10px;">Unable to load application.</h1>
+                    <p style="color: #374151; margin-bottom: 20px;">We encountered a critical error while starting the app.</p>
+                    <pre style="background-color: #f3f4f6; padding: 15px; border-radius: 8px; overflow: auto; text-align: left; max-width: 600px; margin: 0 auto; font-size: 12px;">${message}\n${source}:${lineno}:${colno}</pre>
+                </div>
+            `;
+        }
+      };
+      
+      // Polyfill process for browser environment to fix "process is not defined" errors
+      if (typeof process === 'undefined') {
+        window.process = { env: {} };
+      }
+    </script>
+    
     <script>
       tailwind.config = {
         darkMode: 'class',
@@ -38,6 +80,7 @@
 {
   "imports": {
     "react": "https://aistudiocdn.com/react@^19.2.1",
+    "react-dom/client": "https://aistudiocdn.com/react-dom@^19.2.1/client",
     "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.1/",
     "react/": "https://aistudiocdn.com/react@^19.2.1/",
     "@google/genai": "https://aistudiocdn.com/@google/genai@^1.31.0",

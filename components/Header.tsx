@@ -1,5 +1,6 @@
+
 import React, { useState } from 'react';
-import { ShoppingBag, Menu, X, Moon, Sun, Search, User, HeartPulse } from 'lucide-react';
+import { ShoppingBag, Menu, X, Moon, Sun, Search, User } from 'lucide-react';
 
 interface HeaderProps {
   cartItemCount: number;
@@ -36,9 +37,11 @@ const Header: React.FC<HeaderProps> = ({
           
           {/* Logo */}
           <div className="flex-shrink-0 flex items-center cursor-pointer group" onClick={() => handleNavClick('home')}>
-            <div className="h-10 w-10 bg-blue-600 rounded-lg flex items-center justify-center text-white shadow-lg shadow-blue-600/20 mr-3 group-hover:scale-105 transition-transform duration-300">
-                 <HeartPulse className="h-6 w-6" strokeWidth={2.5} />
-            </div>
+            <img 
+              src="https://res.cloudinary.com/dldtmvsow/image/upload/v1767448355/images_qgnmxn.png" 
+              alt="Dr. Nurse Collections Logo" 
+              className="h-12 w-auto mr-3 object-contain group-hover:scale-105 transition-transform duration-300"
+            />
             
             <div className="flex flex-col justify-center select-none">
                 <span className="font-montserrat font-extrabold text-xl tracking-tight text-slate-900 dark:text-white leading-none">

@@ -1,4 +1,3 @@
-
 import { GoogleGenAI } from "@google/genai";
 import { STORE_NAME, PRODUCTS } from '../constants';
 import { supabase } from '../lib/supabase';
@@ -57,7 +56,7 @@ export const sendMessageToGemini = async (message: string, history: {role: strin
 
     const ai = new GoogleGenAI({ apiKey: apiKey });
     const chat = ai.chats.create({
-      model: 'gemini-2.5-flash',
+      model: 'gemini-3-flash-preview',
       config: {
         systemInstruction: systemInstruction,
         temperature: 0.7,
@@ -80,7 +79,7 @@ export const enhanceImagePrompt = async (originalPrompt: string): Promise<string
         
         const ai = new GoogleGenAI({ apiKey: apiKey });
         const response = await ai.models.generateContent({
-            model: 'gemini-2.5-flash',
+            model: 'gemini-3-flash-preview',
             contents: `Rewrite the following image description into a detailed, high-quality prompt for an AI image generator. Focus on clarity, fine details, lighting, fabric texture, realism, and medical aesthetics. Keep it concise (under 50 words) but highly descriptive. Input: "${originalPrompt}"`,
         });
         

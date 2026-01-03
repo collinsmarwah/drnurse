@@ -1,3 +1,4 @@
+
 import React, { forwardRef, useState, useMemo } from 'react';
 import { Maximize, X, ArrowRight } from 'lucide-react';
 import { GALLERY_IMAGES } from '../constants';
@@ -11,18 +12,25 @@ const Gallery = forwardRef<HTMLElement, GalleryProps>(({ preview = false, onView
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [activeFilter, setActiveFilter] = useState<string>('All');
 
+  // Safety check in case constants are undefined or empty
+  const images = GALLERY_IMAGES || [];
+
   const categories = useMemo(() => {
-    const cats = new Set(GALLERY_IMAGES.map(img => img.category));
+    if (!images.length) return ['All'];
+    const cats = new Set(images.map(img => img.category));
     return ['All', ...Array.from(cats)];
-  }, []);
+  }, [images]);
 
   const filteredImages = useMemo(() => {
+    if (!images.length) return [];
     if (preview) {
-      return GALLERY_IMAGES.slice(0, 4);
+      // Display only the first 4 images for the homepage preview
+      return images.slice(0, 4);
     }
-    if (activeFilter === 'All') return GALLERY_IMAGES;
-    return GALLERY_IMAGES.filter(img => img.category === activeFilter);
-  }, [activeFilter, preview]);
+    // For the full gallery page, display ALL images (including the first 4)
+    if (activeFilter === 'All') return images;
+    return images.filter(img => img.category === activeFilter);
+  }, [activeFilter, preview, images]);
 
   return (
     <section id="gallery" ref={ref} className="py-24 bg-white dark:bg-slate-900 transition-colors duration-300 relative overflow-hidden">
@@ -45,7 +53,7 @@ const Gallery = forwardRef<HTMLElement, GalleryProps>(({ preview = false, onView
           <p className="text-lg text-gray-500 dark:text-gray-400 leading-relaxed">
             {preview 
               ? "A glimpse of our premium medical attire in real-world settings."
-              : "Explore our collection of premium medical attire in real-world settings. From the operating room to the clinic, see how professionals style Dr. Nurse Collections."
+              : "Explore our complete collection of premium medical attire. From the operating room to the clinic, see how professionals style Dr. Nurse Collections."
             }
           </p>
         </div>
@@ -69,13 +77,13 @@ const Gallery = forwardRef<HTMLElement, GalleryProps>(({ preview = false, onView
           </div>
         )}
 
-        {/* Grid */}
+        {/* Grid Layout - Responsive: 1 col mobile, 2 col sm, 3 col md, 4 col lg */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {filteredImages.map((image, index) => (
+          {filteredImages.map((image) => (
             <div 
               key={image.id}
-              className="group relative aspect-[3/4] overflow-hidden rounded-2xl bg-gray-100 dark:bg-slate-800 cursor-pointer shadow-sm hover:shadow-xl transition-all duration-500 hover:-translate-y-1 animate-in fade-in zoom-in duration-500"
-              style={{ animationDelay: `${index * 50}ms`, animationFillMode: 'both' }}
+              className="group relative overflow-hidden rounded-2xl bg-gray-100 dark:bg-slate-800 cursor-pointer shadow-sm hover:shadow-xl transition-all duration-500 hover:-translate-y-1"
+              style={{ aspectRatio: '3/4' }}
               onClick={() => setSelectedImage(image.src)}
             >
               <img
@@ -127,7 +135,7 @@ const Gallery = forwardRef<HTMLElement, GalleryProps>(({ preview = false, onView
       {/* Lightbox Modal */}
       {selectedImage && (
         <div 
-          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/95 p-4 backdrop-blur-md animate-in fade-in duration-300"
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/95 p-4 backdrop-blur-md"
           onClick={() => setSelectedImage(null)}
         >
           <button 
@@ -140,7 +148,7 @@ const Gallery = forwardRef<HTMLElement, GalleryProps>(({ preview = false, onView
           <img 
             src={selectedImage} 
             alt="Gallery preview" 
-            className="max-h-[90vh] max-w-full rounded-lg shadow-2xl animate-in zoom-in-95 duration-300 object-contain"
+            className="max-h-[90vh] max-w-full rounded-lg shadow-2xl object-contain"
             onClick={(e) => e.stopPropagation()}
           />
         </div>

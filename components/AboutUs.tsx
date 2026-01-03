@@ -34,7 +34,7 @@ const AboutUs: React.FC = () => {
                 <div className="relative">
                     <div className="absolute -top-4 -left-4 w-24 h-24 bg-blue-100 dark:bg-blue-900/30 rounded-full z-0"></div>
                     <img 
-                        src="https://images.pexels.com/photos/5207085/pexels-photo-5207085.jpeg?auto=compress&cs=tinysrgb&w=800" 
+                        src="https://res.cloudinary.com/dldtmvsow/image/upload/v1767449732/467624679_18063795511754000_8701816835706790505_n_1_soz1xr.jpg" 
                         alt="Founder working" 
                         className="relative z-10 rounded-2xl shadow-2xl w-full object-cover h-[500px]"
                     />
@@ -125,7 +125,7 @@ const AboutUs: React.FC = () => {
                <div className="order-2 lg:order-1 relative">
                    <div className="absolute inset-0 bg-blue-600 rounded-2xl transform rotate-3 scale-95 opacity-20"></div>
                    <img 
-                        src="https://images.pexels.com/photos/1181605/pexels-photo-1181605.jpeg?auto=compress&cs=tinysrgb&w=800" 
+                        src="https://res.cloudinary.com/dldtmvsow/image/upload/v1767449119/95585814_125070815831321_3263762497387102208_n_1_yrrkqv.jpg" 
                         alt="Visionary Look" 
                         className="rounded-2xl shadow-2xl relative z-10"
                    />
@@ -139,7 +139,7 @@ const AboutUs: React.FC = () => {
                        "Our journey began with a simple sketch and a desire to bring dignity back to medical apparel. When you put on our scrubs, I want you to feel the respect we have for the work you do."
                    </p>
                    <div>
-                       <p className="font-bold text-xl text-gray-900 dark:text-white">Dr. Sarah Jenkins</p>
+                       <p className="font-bold text-xl text-gray-900 dark:text-white">Dr. Stephen Maroa</p>
                        <p className="text-blue-600 dark:text-blue-400">Founder & CEO</p>
                    </div>
                </div>
